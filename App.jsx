@@ -1,4 +1,3 @@
-// nexus-associate-portal/src/App.jsx
 import React, { useState } from 'react';
 import GlobalIntelDashboard from './components/GlobalIntelDashboard';
 import OffPlatformClients from './views/OffPlatformClients';
@@ -13,7 +12,7 @@ const MONO = "'IBM Plex Mono',monospace";
 export default function App() {
   const [activeTab, setActiveTab] = useState('intel');
 
-  // Hardcoded or dynamically fetched mock/scoped user object
+  // Isolated mock user object for the associate
   const associateUser = {
     email: "bradmobusiness@gmail.com",
     role: "ASSOCIATE"
@@ -21,6 +20,7 @@ export default function App() {
 
   return (
     <div style={{ display: 'flex', height: '100vh', background: '#020202', color: '#fff', fontFamily: MONO }}>
+      
       {/* Sidebar Navigation */}
       <div style={{ width: 260, borderRight: `1px solid ${BORDER}`, background: '#050505', display: 'flex', flexDirection: 'column' }}>
         <div style={{ padding: 20, borderBottom: `1px solid ${BORDER}` }}>
@@ -44,6 +44,7 @@ export default function App() {
   );
 }
 
+// Minimal Sidebar Button Component
 function SidebarBtn({ label, active, onClick }) {
   return (
     <button onClick={onClick} style={{
