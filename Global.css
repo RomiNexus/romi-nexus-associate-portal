@@ -1,0 +1,62 @@
+/* nexus-associate-portal/src/Global.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #020202;
+  color: #c0c0c0;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbars ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #020202; }
+::-webkit-scrollbar-thumb { background: #1e1e1e; }
+
+/* ── Shared animations ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+/* ══ MOBILE (≤ 768px) ══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Prevent iOS input zoom (must be ≥16px) */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* Touch targets */
+  button {
+    min-height: 40px;
+    touch-action: manipulation;
+  }
+
+  /* Any grid layout in the portal collapses to a single column on mobile */
+  .nx-kpi-grid,
+  .nx-two-col,
+  .nx-intel-maps-grid,
+  .nx-intel-chart-grid,
+  .nx-form-grid,
+  .nx-mandate-grid,
+  .nx-home-status-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Panel action rows wrap instead of overflowing */
+  .nx-panel-actions {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+}
+
+/* ══ TABLET (769–1024px) ═══════════════════════════════════════════════════ */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nx-kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
