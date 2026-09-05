@@ -20,21 +20,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24 # ◄◄◄ FIXED: Bumped to Node 24 to clear the deprecation warning
           cache: 'npm'
+          
       - name: Install dependencies
-        run: npm ci
+        run: npm install # ◄◄◄ FIXED: Changed from 'npm ci' so it doesn't require a package-lock.json file
+        
       - name: Build
         run: npm run build
+        
       - name: Setup Pages
         uses: actions/configure-pages@v4
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # Instructs GitHub to only upload the compiled React output
+          path: './dist' 
 
   deploy:
     environment:
