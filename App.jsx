@@ -15,7 +15,7 @@ export default function App() {
 
   // Hardcoded or dynamically fetched mock/scoped user object
   const associateUser = {
-    email: "associate@rominexus.com",
+    email: "bradmobusiness@gmail.com",
     role: "ASSOCIATE"
   };
 
