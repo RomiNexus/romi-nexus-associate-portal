@@ -24,11 +24,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24 # ◄◄◄ FIXED: Bumped to Node 24 to clear the deprecation warning
-          cache: 'npm'
+          node-version: 24 # Node 24 without caching enabled
           
       - name: Install dependencies
-        run: npm install # ◄◄◄ FIXED: Changed from 'npm ci' so it doesn't require a package-lock.json file
+        run: npm install
         
       - name: Build
         run: npm run build
