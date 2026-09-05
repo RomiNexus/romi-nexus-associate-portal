@@ -1,6 +1,6 @@
 // nexus-associate-portal/src/App.jsx
 import React, { useState } from 'react';
-import GlobalIntelDashboard from './components/GlobalIntelDashboard';
+import GlobalIntelDashboard from './views/GlobalIntelDashboard';
 import OffPlatformClients from './views/OffPlatformClients';
 import PilotSandboxView from './views/PilotSandboxView';
 import './Global.css';
