@@ -11,9 +11,8 @@ const MONO = "'IBM Plex Mono',monospace";
 const RED = "#c0392b";
 const GREEN = "#27ae60";
 
-// --- BULLETPROOF URL FORMATTER ---
-const rawUrl = import.meta.env.WORKER_URL || "";
-const WORKER_URL = rawUrl.startsWith("http") ? rawUrl : "https://" + rawUrl;
+// Paste your exact Cloudflare Worker URL here
+const WORKER_URL = "https://divine-pond-36b6.vacorp-inquiries.workers.dev";
 
 // --- 1. OTP LOGIN SCREEN ---
 function LoginScreen({ onAuthenticated }) {

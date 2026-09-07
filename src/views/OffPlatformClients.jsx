@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const WORKER_URL = import.meta.env.WORKER_URL;
+const WORKER_URL = "https://divine-pond-36b6.vacorp-inquiries.workers.dev";
 
 // --- SELF-CONTAINED UI COMPONENTS ---
 const GOLD = '#D4AF37';
