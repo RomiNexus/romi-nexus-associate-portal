@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+// ⚠️ REPLACE THIS WITH YOUR ACTUAL CLOUDFLARE WORKER URL
+const WORKER_URL = "https://YOUR-CLOUDFLARE-WORKER-URL.workers.dev";
+
 // --- SELF-CONTAINED UI COMPONENTS ---
 const GOLD = '#D4AF37';
 const DIM = '#3a3a3a';
@@ -49,20 +52,26 @@ export default function OffPlatformClients({ userData }) {
   const initialForm = { id: null, name: '', entity: '', commodities: '', region: '', email: '', phone: '', notes: '', document: null };
   const [form, setForm] = useState(initialForm);
 
+  // 1. FETCH CLIENTS (Protected Route)
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const res = await fetch('https://api.rominexus.com/?action=getOffPlatformClients', {
-          method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: userData?.email })
+        const res = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userData?.token}` // OWASP Token Injection
+          },
+          body: JSON.stringify({ action: 'getOffPlatformClients', email: userData?.email })
         });
         const data = await res.json();
         if (data.success) setClients(data.clients || []);
       } catch (err) { console.error("Error fetching clients:", err); }
     };
-    if (userData?.email) fetchClients();
-  }, [userData?.email]);
+    if (userData?.email && userData?.token) fetchClients();
+  }, [userData?.email, userData?.token]);
 
+  // 2. SUBMIT CLIENT (Protected Route)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name || !form.entity) return alert("Name and Entity are required.");
@@ -76,7 +85,13 @@ export default function OffPlatformClients({ userData }) {
       if (form.id) fd.append('id', form.id);
       Object.keys(form).forEach(key => { if (form[key] && key !== 'id') fd.append(key, form[key]); });
 
-      const res = await fetch(`https://api.rominexus.com/?action=${actionType}`, { method: 'POST', credentials: 'include', body: fd });
+      const res = await fetch(WORKER_URL, { 
+        method: 'POST', 
+        headers: {
+          'Authorization': `Bearer ${userData?.token}` // OWASP Token Injection (No Content-Type needed for FormData)
+        },
+        body: fd 
+      });
       const data = await res.json();
       
       if (data.success) {
