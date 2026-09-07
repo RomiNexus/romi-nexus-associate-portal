@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GlobalIntelDashboard from './views/GlobalIntelDashboard';
 import OffPlatformClients from './views/OffPlatformClients';
 import PilotSandboxView from './views/PilotSandboxView';
@@ -93,12 +93,31 @@ function LoginScreen({ onAuthenticated }) {
 export default function App() {
   const [activeTab, setActiveTab] = useState('intel');
   
-  // sessionData will hold { email, token } once authenticated
-  const [sessionData, setSessionData] = useState(null);
+  // 1. Check Local Storage on load so refreshes don't kill the session
+  const [sessionData, setSessionData] = useState(() => {
+    try {
+      const saved = localStorage.getItem('nexus_associate_session');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+
+  // 2. Save to Local Storage when logging in
+  const handleLogin = (data) => {
+    localStorage.setItem('nexus_associate_session', JSON.stringify(data));
+    setSessionData(data);
+  };
+
+  // 3. Wipe Local Storage when logging out
+  const handleLogout = () => {
+    localStorage.removeItem('nexus_associate_session');
+    setSessionData(null);
+  };
 
   // The Gatekeeper: If no session data exists, force the OTP screen
   if (!sessionData) {
-    return <LoginScreen onAuthenticated={setSessionData} />;
+    return <LoginScreen onAuthenticated={handleLogin} />;
   }
 
   // Construct the live user object to pass to your views
@@ -137,7 +156,7 @@ export default function App() {
 
         {/* Logout Button */}
         <div style={{ marginTop: 'auto', padding: 12, borderTop: `1px solid ${BORDER}` }}>
-          <button onClick={() => setSessionData(null)} style={{ width: '100%', padding: '10px', background: 'transparent', border: `1px solid ${BORDER}`, color: DIM, fontFamily: MONO, fontSize: 8, letterSpacing: '0.15em', cursor: 'pointer', borderRadius: 2, transition: "all 0.15s" }} onMouseEnter={e => e.currentTarget.style.color = '#fff'} onMouseLeave={e => e.currentTarget.style.color = DIM}>
+          <button onClick={handleLogout} style={{ width: '100%', padding: '10px', background: 'transparent', border: `1px solid ${BORDER}`, color: DIM, fontFamily: MONO, fontSize: 8, letterSpacing: '0.15em', cursor: 'pointer', borderRadius: 2, transition: "all 0.15s" }} onMouseEnter={e => e.currentTarget.style.color = '#fff'} onMouseLeave={e => e.currentTarget.style.color = DIM}>
             TERMINATE SESSION
           </button>
         </div>
