@@ -11,7 +11,7 @@ const BORDER = "#1a1a1a";
 const PANEL  = "#070707";
 const MONO   = "'IBM Plex Mono',monospace";
 
-const WORKER_URL = "https://api.rominexus.com";
+const WORKER_URL = "https://divine-pond-36b6.vacorp-inquiries.workers.dev";
 
 const _api = {
   get: async (action, params = {}) => {
