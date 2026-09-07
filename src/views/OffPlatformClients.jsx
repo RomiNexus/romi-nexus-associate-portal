@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// ⚠️ REPLACE THIS WITH YOUR ACTUAL CLOUDFLARE WORKER URL
-const WORKER_URL = "https://YOUR-CLOUDFLARE-WORKER-URL.workers.dev";
+const WORKER_URL = import.meta.env.WORKER_URL;
 
 // --- SELF-CONTAINED UI COMPONENTS ---
 const GOLD = '#D4AF37';
