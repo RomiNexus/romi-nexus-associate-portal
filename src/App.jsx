@@ -11,7 +11,9 @@ const MONO = "'IBM Plex Mono',monospace";
 const RED = "#c0392b";
 const GREEN = "#27ae60";
 
-const WORKER_URL = import.meta.env.WORKER_URL; 
+// --- BULLETPROOF URL FORMATTER ---
+const rawUrl = import.meta.env.WORKER_URL || "";
+const WORKER_URL = rawUrl.startsWith("http") ? rawUrl : "https://" + rawUrl;
 
 // --- 1. OTP LOGIN SCREEN ---
 function LoginScreen({ onAuthenticated }) {
