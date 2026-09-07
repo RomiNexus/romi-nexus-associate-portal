@@ -47,8 +47,7 @@ const MOCK_NEWS = [
   { id: "m2", category: "COMPLIANCE", headline: "UAE CENTRAL BANK AML FRAMEWORK UPDATE — Q2 2026", impactsynthesis: "New beneficial ownership thresholds effective Q3 2026. DNFBP entities must re-register.", commoditytags: ["Gold", "Silver", "Compliance"], intensity: 72, date: new Date(Date.now() - 7200000).toISOString() },
 ];
 
-// 🚀 UPDATED TABS
-const TABS = ["ORCHESTRATOR SYNTHESIS", "AGRI", "PRECIOUS METALS", "BASE METALS", "ENERGY", "CONFLICT"];
+const TABS = ["MACRO INDEX", "AGRI", "PRECIOUS METALS", "BASE METALS", "ENERGY", "CONFLICT"];
 
 const S = {
   panel:     { background: PANEL, border: `1px solid ${BORDER}`, borderRadius: 3, display: "flex", flexDirection: "column" },
@@ -114,7 +113,7 @@ function NewsCard({ item, expanded, onToggle }) {
       {expanded && item.impactsynthesis && (
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 10, marginTop: 4, animation: "fadeIn 0.15s ease" }}>
           <span style={{ fontFamily: MONO, fontSize: 8, color: DIM, letterSpacing: "0.15em", display: "block", marginBottom: 6 }}>
-            {item.impactsynthesis.includes("LIVE MARKET FEED") ? "MARKET FEED SYNOPSIS" : "AI IMPACT SYNTHESIS"}
+            MARKET SYNOPSIS
           </span>
           <span style={{ fontFamily: MONO, fontSize: 8, color: "#8a8a8a", lineHeight: 1.8, display: "block" }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.impactsynthesis.replace(/\b(HIGH|CRITICAL|ELEVATED)\b/g, `<span style="color:${RED}">$1</span>`).replace(/\b(MEDIUM|MODERATE)\b/g, `<span style="color:${ORANGE}">$1</span>`)) }} />
           {item.link && (
@@ -131,7 +130,7 @@ function SkeletonCard() {
 }
 
 export default function GlobalIntelDashboard({ activeMandates }) {
-  const [activeTab, setActiveTab]   = useState("ORCHESTRATOR SYNTHESIS");
+  const [activeTab, setActiveTab]   = useState("MACRO INDEX");
   const [news, setNews]             = useState([]);
   const [loading, setLoading]       = useState(true);
   const [expandedId, setExpandedId] = useState(null);
@@ -143,7 +142,10 @@ export default function GlobalIntelDashboard({ activeMandates }) {
     setLoading(true);
     setApiFailed(false);
     try {
-      const res = await _api.get("getGlobalIntel", { category: tab });
+      // Map the clean frontend tab to the backend category router
+      const backendCategory = tab === "MACRO INDEX" ? "ORCHESTRATOR SYNTHESIS" : tab;
+      
+      const res = await _api.get("getGlobalIntel", { category: backendCategory });
       if (res && res.error) throw new Error(res.error);
 
       if (res?.items?.length) {
@@ -153,7 +155,7 @@ export default function GlobalIntelDashboard({ activeMandates }) {
             id: n.id || i, headline, link: n.link || null,
             commoditytags: Array.isArray(n.commoditytags) ? n.commoditytags : [tab],
             intensity: n.intensity || deterministicScore(headline),
-            impactsynthesis: n.impactsynthesis || n.title || "Awaiting synthesis...",
+            impactsynthesis: n.impactsynthesis || n.title || "Awaiting feed data...",
             date: n.date || new Date().toISOString(),
           };
         });
@@ -235,9 +237,9 @@ export default function GlobalIntelDashboard({ activeMandates }) {
               <button 
                 key={tab} 
                 onClick={() => setActiveTab(tab)} 
-                style={{ fontFamily: MONO, fontSize: 8, color: activeTab === tab ? "#020202" : (tab === "ORCHESTRATOR SYNTHESIS" ? GOLD : DIM), background: activeTab === tab ? GOLD : "transparent", border: `1px solid ${activeTab === tab ? GOLD : BORDER}`, borderRadius: 2, padding: "4px 10px", cursor: "pointer", transition: "all 0.15s", letterSpacing: "0.1em" }}
+                style={{ fontFamily: MONO, fontSize: 8, color: activeTab === tab ? "#020202" : (tab === "MACRO INDEX" ? GOLD : DIM), background: activeTab === tab ? GOLD : "transparent", border: `1px solid ${activeTab === tab ? GOLD : BORDER}`, borderRadius: 2, padding: "4px 10px", cursor: "pointer", transition: "all 0.15s", letterSpacing: "0.1em" }}
               >
-                {tab === "ORCHESTRATOR SYNTHESIS" && activeTab !== tab ? "✨ " : ""}{tab}
+                {tab}
               </button>
             ))}
           </div>
